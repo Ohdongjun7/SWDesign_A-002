@@ -1,47 +1,43 @@
 ```mermaid
-classDiagram
-    direction TB
+useCaseDiagram
+    actor "학생 (Student)" as S
+    actor "교수 (Professor)" as P
 
-    class User {
-        <<Abstract>>
-        +String id
-        +String password
-        +String name
-        +login() Boolean
+    package "학사관리 시스템 (Academic Management System)" {
+        usecase "학생 등록" as UC_S_REG
+        usecase "학생 조회" as UC_S_VIEW
+        usecase "학생 인증" as UC_S_AUTH
+        
+        usecase "교수 등록" as UC_P_REG
+        usecase "교수 조회" as UC_P_VIEW
+        usecase "교수 인증" as UC_P_AUTH
+
+        usecase "과목 등록" as UC_SUB_REG
+        usecase "과목 점수 입력" as UC_SCORE_IN
+        usecase "수강 신청" as UC_ENROLL
+        usecase "학점 조회" as UC_GRADE_VIEW
+        usecase "과목 조회" as UC_SUB_VIEW
     }
 
-    class Student {
-        +registerStudent()
-        +viewStudent()
-        +applyForSubject()
-        +viewGrades()
-    }
+    %% 학생 관련 연결
+    S --> UC_S_REG
+    S --> UC_S_VIEW
+    S --> UC_S_AUTH
+    S --> UC_ENROLL
+    S --> UC_GRADE_VIEW
+    S --> UC_SUB_VIEW
 
-    class Professor {
-        +registerProfessor()
-        +viewProfessor()
-        +registerSubject()
-        +inputSubjectScore()
-    }
+    %% 교수 관련 연결
+    P --> UC_P_REG
+    P --> UC_P_VIEW
+    P --> UC_P_AUTH
+    P --> UC_SUB_REG
+    P --> UC_SCORE_IN
+    P --> UC_SUB_VIEW
 
-    class Subject {
-        +String subjectId
-        +String subjectName
-        +int score
-        +String grade
-        +updateScore(int score)
-        +calculateGrade()
-    }
-
-    %% 상속 관계
-    User <|-- Student
-    User <|-- Professor
-
-    %% 연관 관계 및 제약 조건
-    %% 학생은 3~5개의 과목을 수강
-    %% 과목 하나에는 30~35명의 학생이 존재
-    Student "30..35" -- "3..5" Subject : 수강신청
-
-    %% 교수는 1~3개의 과목을 등록/관리
-    %% 과목은 교수 1명에 의해서만 관리됨
-    Professor "1" -- "1..3" Subject : 관리/등록
+    %% 포함(Include) 관계: 인증이 필요한 기능들
+    UC_ENROLL ..> UC_S_AUTH : <<include>>
+    UC_GRADE_VIEW ..> UC_S_AUTH : <<include>>
+    
+    UC_SUB_REG ..> UC_P_AUTH : <<include>>
+    UC_SCORE_IN ..> UC_P_AUTH : <<include>>
