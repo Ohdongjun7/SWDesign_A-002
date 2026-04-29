@@ -3,7 +3,7 @@ useCaseDiagram
     actor "학생 (Student)" as S
     actor "교수 (Professor)" as P
 
-    package "학사관리 시스템 (Academic Management System)" {
+    package "학사관리 시스템" {
         usecase "학생 등록" as UC_S_REG
         usecase "학생 조회" as UC_S_VIEW
         usecase "학생 인증" as UC_S_AUTH
@@ -19,7 +19,7 @@ useCaseDiagram
         usecase "과목 조회" as UC_SUB_VIEW
     }
 
-    %% 학생 관련 연결
+    %% 학생의 활동
     S --> UC_S_REG
     S --> UC_S_VIEW
     S --> UC_S_AUTH
@@ -27,7 +27,7 @@ useCaseDiagram
     S --> UC_GRADE_VIEW
     S --> UC_SUB_VIEW
 
-    %% 교수 관련 연결
+    %% 교수의 활동
     P --> UC_P_REG
     P --> UC_P_VIEW
     P --> UC_P_AUTH
@@ -35,7 +35,7 @@ useCaseDiagram
     P --> UC_SCORE_IN
     P --> UC_SUB_VIEW
 
-    %% 포함(Include) 관계: 인증이 필요한 기능들
+    %% 관계 정의 (Include)
     UC_ENROLL ..> UC_S_AUTH : <<include>>
     UC_GRADE_VIEW ..> UC_S_AUTH : <<include>>
     
